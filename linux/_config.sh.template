@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# pleate set number of CPU core
+#CPUCore=8
