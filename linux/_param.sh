@@ -59,22 +59,25 @@ Day=$PARAM_DAY
 ########################################
 # PlaceholderResultPath
 if [ "$PARAM_PLACEHOLDER_PATH" == "" ]; then
-    echo "please specify the placeholder result path.[8]"
+    echo "please specify the placeholder result path. [8]"
     exit -1
 fi
 PlaceholderResultPath=$PARAM_PLACEHOLDER_PATH
-
 
 ########################################
 # ReuseBuildDir
 if [ "$PARAM_REUSE_BUILDDIR" == "" ]; then
     ReuseBuildDir="0"
-    echo "ReuseBuildDir is default setting[0]"
+    echo "ReuseBuildDir is default setting[0]. [9]"
 else
     ReuseBuildDir=$PARAM_REUSE_BUILDDIR
 fi
 
-
-
-
-echo $PlaceholderResultPath
+########################################
+# ReuseBuildDir
+if [ "$PARAM_PACKAGE_PREFIX" == "" ]; then
+    PackageNamePrefix=""
+    echo "PackageNamePrefix is default setting[]. [10]"
+else
+    PackageNamePrefix=$PARAM_PACKAGE_PREFIX
+fi

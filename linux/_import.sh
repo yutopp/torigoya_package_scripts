@@ -139,6 +139,7 @@ function copy_deb_to_holder() {
     cp -v $current_dir/*.deb $PlaceholderResultPath/.
 }
 
+# deplecated
 function make_deb_package() {
     package_name=$1
     package_version=$2
@@ -163,7 +164,8 @@ function make_deb_from_dir() {
     # fpm -s dir -t rpm -n "slashbin" -v 1.0 /bin /sbin
     # makes "slashbin_1.0.x86_64.rpm"
 
-    package_name=$1
+    # with package name prefix
+    package_name=$PackageNamePrefix$1
     package_version=$2
     current_dir=$3
     installed_dir=$4
