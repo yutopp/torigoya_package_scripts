@@ -124,36 +124,6 @@ function make_package_version() {
     esac
 }
 
-function make_rpm_package() {
-    package_name=$1
-    package_version=$2
-    shift; shift  # drop args ($1 and $2)
-    install_commands=$@
-
-    (make all -j$CPUCore || make -j$CPUCore) \
-        && checkinstall -R --fstrans=no --install=yes --maintainer="yutopp@gmail.com" --arch=$Arch --pkgname=$package_name --pkgversion=$package_version -y --nodoc $install_commands
-}
-
-function copy_deb_to_holder() {
-    current_dir=$1
-    cp -v $current_dir/*.deb $PlaceholderResultPath/.
-}
-
-# deplecated
-function make_deb_package() {
-    package_name=$1
-    package_version=$2
-    current_dir=$3
-    shift; shift; shift # drop args ($1, $2 and $3)
-    install_commands=$@
-
-    expected_pkg_name=$package_name"_"$package_version"-1_"$Arch".deb"
-
-    ( make all -j$CPUCore || make -j$CPUCore ) \
-        && checkinstall -D --fstrans=yes --install=no --maintainer="yutopp@gmail.com" --pkgarch=$Arch --pkgname=$package_name --pkgversion=$package_version --pkgrelease=1 -d2 -y --nodoc $install_commands \
-        && copy_deb_to_holder $current_dir
-}
-
 
 function make_versioned_deb_from_dir() {
     make_deb_from_dir $1-$2 $2 $3 $4

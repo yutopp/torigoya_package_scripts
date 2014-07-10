@@ -31,7 +31,7 @@ if [ "$LLVMVersion" == "head" ]; then
     echo "Version => $RevedPackageVersion"
 
     #
-    IFS="?";read Cur Conf <<< "`init_build $LLVM $LLVMVersion`"
+    IFS="?";read Cur Conf <<< "`init_build llvm trunk`"
     cd $Cur
 
     # This is Edge version, so DO NOT USE RevedPackageVersion
@@ -47,7 +47,7 @@ if [ "$LLVMVersion" == "head" ]; then
     && make_deb_from_dir $LLVM $RevedPackageVersion $Cur $InstallPrefix
 
 else
-    #
+    #########################################
     if [ "$ReuseBuildDir" == "0" ]; then
         wget http://llvm.org/releases/3.4/llvm-3.4.src.tar.gz
         tar zxvf llvm-3.4.src.tar.gz
