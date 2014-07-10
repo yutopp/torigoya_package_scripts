@@ -22,7 +22,7 @@ IFS="?";read Cur Conf <<< "`init_build $BOOST $BOOSTVersion`"
 cd $Cur
 
 #
-if [ "$BOOSTVersion" == "trunk" ]; then
+if [ "$BOOSTVersion" == "head" ]; then
     echo "not supported"
     exit -1
 

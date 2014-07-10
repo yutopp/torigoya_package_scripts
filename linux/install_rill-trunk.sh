@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-RawPackageVersion="trunk"
+RawPackageVersion="head"
 
 # call
 . _install_rill.sh

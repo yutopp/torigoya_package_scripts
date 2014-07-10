@@ -2,7 +2,7 @@
 
 #
 SPROUT="sprout"
-SPROUTVersion="trunk"
+SPROUTVersion="head"
 
 # call
 . _install_sprout.sh

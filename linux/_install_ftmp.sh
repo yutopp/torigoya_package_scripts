@@ -19,7 +19,7 @@ IFS="?";read Cur Conf <<< "`init_build $PackageName $PackageVersion`"
 cd $Cur
 
 #
-if [ "$RawPackageVersion" == "trunk" ]; then
+if [ "$RawPackageVersion" == "head" ]; then
     #
     if [ ! -e Sprout ]; then
         git clone https://github.com/minamiyama1994/FTMP.git

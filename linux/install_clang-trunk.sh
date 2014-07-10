@@ -2,7 +2,7 @@
 
 #
 CLANG="clang"
-CLANGVersion="trunk"
+CLANGVersion="head"
 
 # call
 . _install_clang.sh

@@ -2,7 +2,7 @@
 
 #
 TargetName="libc++"
-TargetVersion="trunk"
+TargetVersion="head"
 
 # call
 . _install_libc++.sh

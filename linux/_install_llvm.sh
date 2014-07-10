@@ -18,7 +18,7 @@ cd $BuildWorkPath
 
 
 #
-if [ "$LLVMVersion" == "trunk" ]; then
+if [ "$LLVMVersion" == "head" ]; then
     #
     svn co http://llvm.org/svn/llvm-project/llvm/trunk llvm-trunk
 

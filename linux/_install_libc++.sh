@@ -13,7 +13,7 @@ cd $BuildWorkPath
 
 
 
-if [ "$TargetVersion" == "trunk" ]; then
+if [ "$TargetVersion" == "head" ]; then
     #
     svn co http://llvm.org/svn/llvm-project/libcxx/trunk libcxx
 

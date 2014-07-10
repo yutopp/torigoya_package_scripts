@@ -102,7 +102,7 @@ function make_package_version() {
     target_version=$1
 
     case $target_version in
-        'trunk')
+        'head')
             # edge version
             echo "999.$Year.$Month.$Day"
             ;;

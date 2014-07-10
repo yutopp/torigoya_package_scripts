@@ -2,7 +2,7 @@
 
 #
 LLVM="llvm"
-LLVMVersion="trunk"
+LLVMVersion="head"
 
 # call
 . _install_llvm.sh

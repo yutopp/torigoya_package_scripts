@@ -17,7 +17,7 @@ cd $BuildWorkPath
 
 
 #
-if [ "$ProgramVersion" == "trunk" ]; then
+if [ "$ProgramVersion" == "head" ]; then
     if [ ! -e Gauche ]; then
         git clone https://github.com/shirok/Gauche.git
     fi

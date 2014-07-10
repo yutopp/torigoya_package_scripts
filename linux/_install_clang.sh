@@ -17,7 +17,7 @@ CLANGPath="clang"
 BuildWorkPath=`buildworkpath $CLANGPath`
 cd $BuildWorkPath
 
-if [ "$CLANGVersion" == "trunk" ]; then
+if [ "$CLANGVersion" == "head" ]; then
     # 1
     svn co http://llvm.org/svn/llvm-project/llvm/trunk llvm
 

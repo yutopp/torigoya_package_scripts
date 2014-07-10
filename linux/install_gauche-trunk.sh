@@ -2,7 +2,7 @@
 
 #
 Program="gauche"
-ProgramVersion="trunk"
+ProgramVersion="head"
 
 # call
 . _install_gauche.sh
