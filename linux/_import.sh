@@ -124,6 +124,10 @@ function make_package_version() {
     esac
 }
 
+function copy_deb_to_holder() {
+    current_dir=$1
+    cp -v $current_dir/*.deb $PlaceholderResultPath/.
+}
 
 function make_versioned_deb_from_dir() {
     make_deb_from_dir $1-$2 $2 $3 $4
