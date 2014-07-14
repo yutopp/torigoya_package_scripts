@@ -54,5 +54,5 @@ install:
 EOF
 
 
-# package name: Ex. dmd-2.065.0_2.065.0_amd64.deb
+# package name: Ex. dmd.2.065.0_2.065.0_amd64.deb
 make_versioned_deb_from_dir $Program $PackageVersion $Cur $InstallDir
