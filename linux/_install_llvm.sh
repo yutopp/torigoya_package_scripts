@@ -16,7 +16,6 @@ BuildWorkPath=`buildworkpath $LLVMPath`
 cd $BuildWorkPath
 
 
-
 #
 if [ "$LLVMVersion" == "head" ]; then
     #

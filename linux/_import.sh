@@ -77,7 +77,7 @@ function expand_data() {
 }
 
 
-#
+# deprecated
 function init_build() {
     DataName=$1
     DataVersion=$2
@@ -95,6 +95,26 @@ function init_build() {
     cd $BuildPath
 
     echo `pwd`"?"$DataName-$DataVersion
+}
+
+#
+function make_build_dir() {
+    BaseName=$1
+    BuildPath=$BaseName-build
+    Conf=`pwd`
+
+    if [ "$ReuseBuildDir" == "0" ]; then
+        if [ -e $BuildPath ]; then
+            sudo rm -rf $BuildPath
+        fi
+    fi
+    if [ ! -e $BuildPath ]; then
+        mkdir $BuildPath
+    fi
+    cd $BuildPath
+    Cur=`pwd`
+
+    echo $Cur"?"$Conf
 }
 
 
@@ -122,6 +142,10 @@ function make_package_version() {
             echo "$target_version" | sed -s 's/(_|-)/\./g'
             ;;
     esac
+}
+
+function get_git_rev() {
+    echo `git log --pretty=format:"%H" -1 | cut -c 1-10`
 }
 
 function copy_deb_to_holder() {
