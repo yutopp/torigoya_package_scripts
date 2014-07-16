@@ -1,4 +1,4 @@
-# Packageing scripts
+# Packaging scripts
 ## Linux
 ### gcc
 - [x] head
