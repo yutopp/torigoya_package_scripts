@@ -166,6 +166,13 @@ function make_versioned_deb_from_dir() {
 }
 
 function make_edge_deb_from_dir() {
+    # --force option of FPM means, overwrites if package existed
+    ( make all -j$CPUCore || make -j$CPUCore ) \
+        && make install \
+        && pack_edge_deb_from_dir $1 $2 $3 $4
+}
+
+function pack_edge_deb_from_dir() {
     # Ex,
     # fpm -s dir -t rpm -n "slashbin" -v 1.0 /bin /sbin
     # makes "slashbin_1.0.x86_64.rpm"
@@ -180,8 +187,6 @@ function make_edge_deb_from_dir() {
     expected_pkg_name=$package_name"_"$package_version"_"$Arch".deb"
 
     # --force option of FPM means, overwrites if package existed
-    ( make all -j$CPUCore || make -j$CPUCore ) \
-        && make install \
-        && fpm --force -s dir -t deb -n $package_name -v $package_version $installed_dir \
+    fpm --force -s dir -t deb -n $package_name -v $package_version $installed_dir \
         && copy_deb_to_holder $current_dir
 }
