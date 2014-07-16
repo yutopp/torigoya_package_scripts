@@ -1,21 +1,25 @@
 # Packageing scripts
 ## Linux
 ### gcc
-[x] head
-[x] versioned
+- [x] head
+- [x] versioned
 
 ### dmd
-[x] head
-[x] versioned
+- [x] head
+- [x] versioned
 
 ### ruby
-[x] head
-[ ] versioned
+- [x] head
+- [ ] versioned
 
 ### clang
-[x] head
-[ ] versioned
+- [x] head
+- [ ] versioned
 
 ### libc++
-[x] head
-[ ] versioned
+- [x] head
+- [ ] versioned
+
+### Sprout
+- [x] head
+- [ ] versioned

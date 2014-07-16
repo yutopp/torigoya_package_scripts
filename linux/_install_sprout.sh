@@ -54,10 +54,9 @@ install:
 EOF
 
     # DO NOT contain package version to name
-    # This is Edge version, so DO NOT USE versioned_deb
-    make_deb_from_dir $PackageName $PackageVersion $Cur $InstallDir
+    make_edge_deb_from_dir $PackageName $PackageVersion $Cur $InstallDir
 
 else
-    echo "NONONONOON"
+    echo "not supported"
     exit -1
 fi
