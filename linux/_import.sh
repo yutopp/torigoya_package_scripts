@@ -148,16 +148,24 @@ function get_git_rev() {
     echo `git log --pretty=format:"%H" -1 | cut -c 1-10`
 }
 
+function get_svn_rev() {
+    echo `svn info | grep '^Revision:' | sed 's/^Revision: \([0-9]\+\)/\1/'`
+}
+
 function copy_deb_to_holder() {
     current_dir=$1
     cp -v $current_dir/*.deb $PlaceholderResultPath/.
 }
 
 function make_versioned_deb_from_dir() {
-    make_deb_from_dir $1-$2 $2 $3 $4
+    # $1 = package name
+    # $2 = version
+    # $3 = current directory
+    # $4 = installed path
+    make_edge_deb_from_dir $1-$2 $2 $3 $4
 }
 
-function make_deb_from_dir() {
+function make_edge_deb_from_dir() {
     # Ex,
     # fpm -s dir -t rpm -n "slashbin" -v 1.0 /bin /sbin
     # makes "slashbin_1.0.x86_64.rpm"

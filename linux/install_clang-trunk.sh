@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #
-CLANG="clang"
-CLANGVersion="head"
+Program="clang"
+ProgramVersion="head"
 
 # call
 . _install_clang.sh

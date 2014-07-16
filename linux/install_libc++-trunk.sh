@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #
-TargetName="libc++"
-TargetVersion="head"
+ProgramName="libc++"
+ProgramVersion="head"
 
 # call
 . _install_libc++.sh

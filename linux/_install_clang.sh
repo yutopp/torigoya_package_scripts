@@ -3,27 +3,16 @@
 # include
 . _import.sh
 
-# please set this variable...
-#CLANG
-#CLANGVersion
-#CLANGZipped
-
-
 #
-PackageVersion=`make_package_version $CLANGVersion`
+PackageVersion=`make_package_version $ProgramVersion`
 
 # set workspace path
-CLANGPath="clang"
-BuildWorkPath=`buildworkpath $CLANGPath`
+BuildWorkPath=`buildworkpath $Program`
 cd $BuildWorkPath
 
-if [ "$CLANGVersion" == "head" ]; then
+if [ "$ProgramVersion" == "head" ]; then
     # 1
     svn co http://llvm.org/svn/llvm-project/llvm/trunk llvm
-
-    cd llvm
-    SVNLLVMVersion=`svn info | grep '^Revision:' | sed 's/^Revision: \([0-9]\+\)/\1/'`
-    cd ../
 
     # 2
     cd llvm/tools
@@ -49,20 +38,20 @@ if [ "$CLANGVersion" == "head" ]; then
     echo "Version => $RevedPackageVersion"
 
     #
-    IFS="?";read Cur Conf <<< "`init_build $CLANG $CLANGVersion`"
+    IFS="?";read Cur Conf <<< "`make_build_dir clang-build`"
     cd $Cur
 
     # This is Edge version, so DO NOT USE RevedPackageVersion
-    InstallDir=$InstallPath/$CLANG-$CLANGVersion
+    InstallPrefix=$InstallPath/clang.head
 
     # This is Edge version, so DO NOT USE versioned_deb
-    ../$conf/llvm/configure \
-        --prefix=$InstallDir \
+    $Conf/llvm/configure \
+        --prefix=$InstallPrefix \
         --host=$BinarySystem \
         --enable-optimized \
         --enable-assertions=no \
         --enable-targets=host-only \
-    && make_deb_from_dir $CLANG $RevedPackageVersion $Cur $InstallDir
+        && make_edge_deb_from_dir clang $RevedPackageVersion $Cur $InstallPrefix
 
 else
     echo "Not supported"
