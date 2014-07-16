@@ -6,68 +6,116 @@
 #
 FTPMirror="ftp://mirrors.kernel.org/gnu"
 
-# please set this variable...(example)
-#GCC="gcc"
-#GCCVersion="4.8.0"
-#GCCZipped="tar.bz2"
 #
-#GMP="gmp"
-#GMPVersion="5.1.1"
-#GMPZipped="tar.bz2"
-#
-#MPFR="mpfr"
-#MPFRVersion="3.1.2"
-#MPFRZipped="tar.bz2"
-#
-#MPC="mpc"
-#MPCVersion="1.0.1"
-#MPCZipped="tar.gz"
-
-#svn://gcc.gnu.org/svn/gcc/trunk
-
-#
-PackageVersion=`make_package_version $GCCVersion`
+PackageVersion=`make_package_version $ProgramVersion`
 
 # set workspace path
-BasePath="gcc"
-BuildWorkPath=`buildworkpath $BasePath`
+BuildWorkPath=`buildworkpath $Program`
 cd $BuildWorkPath
 
-# GCC
-expand_data $FTPMirror $GCC $GCCVersion $GCCZipped with_version
+if [ "$ProgramVersion" == "head" ]; then
+    ##################################################
+    # install HEAD package
+    ##################################################
+    if [ -e gcc ]; then
+        rm -rf gcc
+    fi
+    git clone --depth 1 git://gcc.gnu.org/git/gcc.git gcc
 
-# GMP
-expand_data $FTPMirror $GMP $GMPVersion $GMPZipped
+    #
+    wget $FTPMirror/gmp/gmp-$GMPVersion.tar.bz2 -O gmp-$GMPVersion.tar.bz2
+    tar jxf gmp-$GMPVersion.tar.bz2
 
-# MPFR
-expand_data $FTPMirror $MPFR $MPFRVersion $MPFRZipped
+    #
+    wget $FTPMirror/mpfr/mpfr-$MPFRVersion.tar.bz2 -O mpfr-$MPFRVersion.tar.bz2
+    tar jxf mpfr-$MPFRVersion.tar.bz2
 
-# MPC
-expand_data $FTPMirror $MPC $MPCVersion $MPCZipped
+    #
+    wget $FTPMirror/mpc/mpc-$MPCVersion.tar.gz -O mpc-$MPCVersion.tar.gz
+    tar xzvf mpc-$MPCVersion.tar.gz
 
-#
-cp -r $GMP-$GMPVersion $GCC-$GCCVersion/$GMP
-cp -r $MPFR-$MPFRVersion $GCC-$GCCVersion/$MPFR
-cp -r $MPC-$MPCVersion $GCC-$GCCVersion/$MPC
+    ls -al
 
-#
-IFS="?";read Cur Conf <<< "`init_build $GCC $GCCVersion`"
-cd $Cur
+    #
+    cp -r gmp-$GMPVersion gcc/gmp
+    cp -r mpfr-$MPFRVersion gcc/mpfr
+    cp -r mpc-$MPCVersion gcc/mpc
 
-InstallDir=$InstallPath/$GCC-$PackageVersion
+    #
+    cd gcc
 
-# configure
-../$Conf/configure \
-    --prefix=$InstallDir \
-    --enable-languages=c,c++,fortran,objc,obj-c++ \
-    --build=$BinarySystem \
-    --host=$BinarySystem \
-    --target=$BinarySystem \
-    --with-mpfr-include=$BuildWorkPath/$GCC-$GCCVersion/$MPFR/src \
-    --with-mpfr-lib=$Cur/$MPFR/src/.libs \
-    --program-suffix=-$PackageVersion \
-    --disable-nls \
-    --disable-multilib \
-    --disable-libstdcxx-pch \
-    --disable-bootstrap \
-&& make_versioned_deb_from_dir $GCC $PackageVersion $Cur $InstallDir
+    Rev=`get_git_rev`
+    RevedPackageVersion="$PackageVersion.$Rev"
+    echo "Version => $RevedPackageVersion"
+
+    #
+    IFS="?";read Cur Conf <<< "`make_build_dir gcc-build`"
+    cd $Cur
+
+    InstallPrefix=$InstallPath/gcc.head
+
+    # configure
+    $Conf/configure \
+        --prefix=$InstallPrefix \
+        --enable-languages=c,c++,fortran,objc,obj-c++ \
+        --build=$BinarySystem \
+        --host=$BinarySystem \
+        --target=$BinarySystem \
+        --with-mpfr-include=$BuildWorkPath/gcc/mpfr/src \
+        --with-mpfr-lib=$Cur/mpfr/src/.libs \
+        --disable-nls \
+        --disable-multilib \
+        --disable-libstdcxx-pch \
+        --disable-bootstrap \
+        && make_edge_deb_from_dir gcc $RevedPackageVersion $Cur $InstallPrefix
+
+else
+    ##################################################
+    # install VERSIONED package
+    ##################################################
+    wget $FTPMirror/gcc/gcc-$ProgramVersion/gcc-$ProgramVersion.tar.bz2 -O gcc-$ProgramVersion.tar.bz2
+    tar jxf gcc-$ProgramVersion.tar.bz2
+
+    #
+    wget $FTPMirror/gmp/gmp-$GMPVersion.tar.bz2 -O gmp-$GMPVersion.tar.bz2
+    tar jxf gmp-$GMPVersion.tar.bz2
+
+    #
+    wget $FTPMirror/mpfr/mpfr-$MPFRVersion.tar.bz2 -O mpfr-$MPFRVersion.tar.bz2
+    tar jxf mpfr-$MPFRVersion.tar.bz2
+
+    #
+    wget $FTPMirror/mpc/mpc-$MPCVersion.tar.gz -O mpc-$MPCVersion.tar.gz
+    tar xzvf mpc-$MPCVersion.tar.gz
+
+    ls -al
+
+    #
+    cp -r gmp-$GMPVersion gcc-$ProgramVersion/gmp
+    cp -r mpfr-$MPFRVersion gcc-$ProgramVersion/mpfr
+    cp -r mpc-$MPCVersion gcc-$ProgramVersion/mpc
+
+    #
+    cd gcc-$ProgramVersion
+
+    #
+    IFS="?";read Cur Conf <<< "`make_build_dir gcc-build`"
+    cd $Cur
+
+    InstallPrefix=$InstallPath/gcc.$PackageVersion
+
+    # configure
+    $Conf/configure \
+        --prefix=$InstallPrefix \
+        --enable-languages=c,c++,fortran,objc,obj-c++ \
+        --build=$BinarySystem \
+        --host=$BinarySystem \
+        --target=$BinarySystem \
+        --with-mpfr-include=$BuildWorkPath/gcc-$ProgramVersion/mpfr/src \
+        --with-mpfr-lib=$Cur/mpfr/src/.libs \
+        --disable-nls \
+        --disable-multilib \
+        --disable-libstdcxx-pch \
+        --disable-bootstrap \
+        && make_versioned_deb_from_dir gcc $PackageVersion $Cur $InstallPrefix
+fi
