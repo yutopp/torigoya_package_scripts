@@ -1,4 +1,4 @@
 #!/bin/bash
 
-# pleate set number of CPU core
-CPUCore=14
+# please set number of CPU core
+CPUCore=2
