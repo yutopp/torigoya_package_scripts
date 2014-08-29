@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #
-RawPackageVersion='4.01.0'
+Program="ocaml"
+ProgramVersion='4.01.0'
 
 # call
 . _install_ocaml.sh

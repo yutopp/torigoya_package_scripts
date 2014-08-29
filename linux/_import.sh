@@ -162,14 +162,27 @@ function make_versioned_deb_from_dir() {
     # $2 = version
     # $3 = current directory
     # $4 = installed path
-    make_edge_deb_from_dir $1-$2 $2 $3 $4
+    # $5 = fpm option
+    # $6 = exec after install
+    make_edge_deb_from_dir $1-$2 $2 $3 $4 "$5" "$6"
 }
+
+function pack_versioned_deb_from_dir() {
+    # $1 = package name
+    # $2 = version
+    # $3 = current directory
+    # $4 = installed path
+    # $5 = fpm option
+    pack_edge_deb_from_dir $1-$2 $2 $3 $4 "$5"
+}
+
 
 function make_edge_deb_from_dir() {
     # --force option of FPM means, overwrites if package existed
     ( make all -j$CPUCore || make -j$CPUCore ) \
         && make install \
-        && pack_edge_deb_from_dir $1 $2 $3 $4
+        && eval "$6" \
+        && pack_edge_deb_from_dir $1 $2 $3 $4 "$5"
 }
 
 function pack_edge_deb_from_dir() {
@@ -182,11 +195,18 @@ function pack_edge_deb_from_dir() {
     package_version=$2
     current_dir=$3
     installed_dir=$4
+    fpm_options="$5"
 
     #
     expected_pkg_name=$package_name"_"$package_version"_"$Arch".deb"
 
     # --force option of FPM means, overwrites if package existed
-    fpm --force -s dir -t deb -n $package_name -v $package_version $installed_dir \
-        && copy_deb_to_holder $current_dir
+
+    if [[ ! -z $fpm_options ]]; then
+        (eval fpm "--force -s dir -t deb -n $package_name -v $package_version --deb-compression xz $fpm_options $installed_dir") \
+            && copy_deb_to_holder $current_dir
+    else
+        fpm --force -s dir -t deb -n $package_name -v $package_version --deb-compression xz $installed_dir \
+            && copy_deb_to_holder $current_dir
+    fi
 }

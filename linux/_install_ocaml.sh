@@ -3,40 +3,41 @@
 # include
 . _import.sh
 
-
 #
-PackageName='ocaml'
-PackageVersion=`make_package_version $RawPackageVersion`
+PackageVersion=`make_package_version $ProgramVersion`
 
 # set workspace path
-BuildWorkPath=`buildworkpath $PackageName`
+BuildWorkPath=`buildworkpath $Program`
 cd $BuildWorkPath
 
-#
-IFS="?";read Cur Conf <<< "`init_build $PackageName $RawPackageVersion`"
-cd $Cur
-
-
-if [ "$RawPackageVersion" == "trunk" ]; then
+if [ "$ProgramVersion" == "head" ]; then
+    ##################################################
+    # install HEAD package
+    ##################################################
     echo "not supported"
     exit -1
+
 else
+    ##################################################
+    # install VERSIONED package
+    ##################################################
+    top_version=`echo $ProgramVersion | sed 's/^\([0-9]\+\)\.\([0-9]\+\)\(.*\)/\1\.\2/'`
 
-    top_version=`echo $RawPackageVersion | sed 's/^\([0-9]\+\)\.\([0-9]\+\)\(.*\)/\1\.\2/'`
+    wget http://caml.inria.fr/pub/distrib/ocaml-$top_version/ocaml-$ProgramVersion.tar.gz -O ocaml-$ProgramVersion.tar.gz
 
-    wget http://caml.inria.fr/pub/distrib/ocaml-$top_version/ocaml-$PackageVersion.tar.gz
+    tar zxvf ocaml-$ProgramVersion.tar.gz
 
-    tar zxvf ocaml-$PackageVersion.tar.gz
-
-    cd ocaml-$PackageVersion
+    cd ocaml-$ProgramVersion
+    Cur=`pwd`
 
     #
-    InstallDir=$InstallPath/$PackageName-$PackageVersion
+    InstallPrefix=$InstallPath/ocaml.$PackageVersion
 
     #
     ./configure \
-        -prefix $InstallDir \
+        -prefix $InstallPrefix \
         -no-curses \
-    && make world.opt \
-    && make_versioned_deb_from_dir_simple $PackageName $PackageVersion $Cur/ocaml-$PackageVersion $InstallDir "--depends libncurses5-dev"
+        && make world.opt \
+        && make install \
+        && pack_versioned_deb_from_dir ocaml $PackageVersion $Cur $InstallPrefix "--depends libncurses5-dev"
 fi

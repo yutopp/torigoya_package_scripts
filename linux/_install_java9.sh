@@ -3,22 +3,17 @@
 # include
 . _import.sh
 
-# regargs "openjdk-6-jdk" is already installed
+# regargs "openjdk-7-jdk" is already installed
 
 #
-PackageName='java9'
-PackageVersion=`make_package_version $RawPackageVersion`
+PackageVersion=`make_package_version $ProgramVersion`
 
 # set workspace path
-BuildWorkPath=`buildworkpath $PackageName`
+BuildWorkPath=`buildworkpath $Program`
 cd $BuildWorkPath
 
 #
-IFS="?";read Cur Conf <<< "`init_build $PackageName $PackageVersion`"
-cd $Cur
-
-#
-if [ "$RawPackageVersion" == "trunk" ]; then
+if [ "$ProgramVersion" == "head" ]; then
     #
     if [ ! -e java9 ]; then
         hg clone http://hg.openjdk.java.net/jdk9/jdk9 java9
@@ -38,9 +33,7 @@ if [ "$RawPackageVersion" == "trunk" ]; then
     RevedPackageVersion="$PackageVersion.$HgVersion"
     echo "Version => $RevedPackageVersion"
 
-
-    # This is Edge version, so USE RawPackageVersion
-    InstallDir=$InstallPath/$PackageName-$RawPackageVersion
+    InstallPrefix=$InstallPath/java9.head
 
     echo $InstallDir
 
@@ -50,9 +43,9 @@ if [ "$RawPackageVersion" == "trunk" ]; then
 
     # This is Edge version, so DO NOT USE versioned_deb
     bash ../configure \
-        --prefix=$InstallDir \
+        --prefix=$InstallPrefix \
     && make \
-    && make_deb_from_dir_simple $PackageName $RevedPackageVersion $Cur/java9/test_build $InstallDir "" "bash -c 'find $InstallDir -perm 600 | xargs chmod 644'"
+    && make_deb_from_dir_simple $PackageName $RevedPackageVersion $Cur/java9/test_build $InstallPrefix "" "bash -c 'find $InstallPrefix -perm 600 | xargs chmod 644'"
 
 else
     echo 'not supported'
