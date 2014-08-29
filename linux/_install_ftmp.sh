@@ -21,7 +21,7 @@ cd $Cur
 #
 if [ "$RawPackageVersion" == "head" ]; then
     #
-    if [ ! -e Sprout ]; then
+    if [ ! -e FTMP ]; then
         git clone https://github.com/minamiyama1994/FTMP.git
     fi
     cd FTMP
