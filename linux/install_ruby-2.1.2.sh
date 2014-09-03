@@ -2,7 +2,7 @@
 
 #
 Program="ruby"
-ProgramVersion="2.1.0"
+ProgramVersion="2.1.2"
 
 # call
 . _install_ruby.sh

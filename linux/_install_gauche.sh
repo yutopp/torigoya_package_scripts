@@ -11,8 +11,7 @@
 PackageVersion=`make_package_version $ProgramVersion`
 
 #
-ProgramPath="gauche"
-BuildWorkPath=`buildworkpath $ProgramPath`
+BuildWorkPath=`buildworkpath $Program`
 cd $BuildWorkPath
 
 
@@ -20,20 +19,26 @@ cd $BuildWorkPath
 if [ "$ProgramVersion" == "head" ]; then
     if [ ! -e Gauche ]; then
         git clone https://github.com/shirok/Gauche.git
+    else
+        cd Gauche
+        git fetch origin
+        git reset --hard origin/master
+        cd ../
     fi
     cd Gauche
-    git pull
 
-    GitVersion=`git log --pretty=format:"%H" -1 | cut -c 1-10`
-    echo $GitVersion
+    Rev=`get_git_rev`
+    echo $Rev
 
-    RevedPackageVersion="$PackageVersion.GitVersion"
+    RevedPackageVersion="$PackageVersion.$Rev"
+
+    InstallPrefix=$InstallPath/gauche.head
 
     ./DIST gen
 
     ./configure \
-        --prefix=$InstallPath/$Program-$RevedPackageVersion \
-    && make_deb_package $Program-$RevedPackageVersion $RevedPackageVersion `pwd`
+        --prefix=$InstallPrefix \
+    && make_edge_deb_from_dir $Program $RevedPackageVersion `pwd` $InstallPrefix
 
 else
     # from package
@@ -41,10 +46,9 @@ else
     tar zxvf Gauche-$ProgramVersion.tgz
     cd Gauche-$ProgramVersion
 
-    ./configure \
-        --prefix=$InstallPath/$Program-$PackageVersion \
-    && make_deb_package $Program-$PackageVersion $PackageVersion `pwd`
+    InstallDir=$InstallPath/gauche.$PackageVersion
 
-    echo "NONONONOON"
-    exit -1
+    ./configure \
+        --prefix=$InstallDir \
+    && make_versioned_deb_from_dir $Program $PackageVersion `pwd` $InstallDir
 fi

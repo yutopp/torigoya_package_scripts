@@ -52,11 +52,11 @@ if [ "$ProgramVersion" == "head" ]; then
 
     # build
     cd dmd/src
-    make -f posix.mak -j8 MODEL=64
+    make -f posix.mak -j$CPUCore MODEL=64
     cd ../../druntime
-    make -f posix.mak -j8 MODEL=64 DMD=../dmd/src/dmd
+    make -f posix.mak -j$CPUCore MODEL=64 DMD=../dmd/src/dmd
     cd ../phobos
-    make -f posix.mak -j8 MODEL=64 DMD=../dmd/src/dmd
+    make -f posix.mak -j$CPUCore MODEL=64 DMD=../dmd/src/dmd
     cd ../
 
     echo "DMD: build finished"

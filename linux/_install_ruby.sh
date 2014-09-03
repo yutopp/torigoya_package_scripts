@@ -12,7 +12,27 @@ cd $BuildWorkPath
 
 #
 if [ "$ProgramVersion" == "head" ]; then
-    echo "not supported"
+    if [ ! -e ruby ]; then
+        git clone git://github.com/ruby/ruby.git
+    else
+        cd ruby
+        git fetch origin
+        git reset --hard origin/master
+        cd ../
+    fi
+    cd ruby
+
+    Rev=`get_git_rev`
+    echo $Rev
+
+    RevedPackageVersion="$PackageVersion.$Rev"
+
+    InstallPrefix=$InstallPath/ruby.head
+
+    autoconf && \
+        ./configure --prefix=$InstallPrefix && \
+        make_edge_deb_from_dir $Program $RevedPackageVersion `pwd` $InstallPrefix
+
 else
     ##################################################
     # install VERSIONED package

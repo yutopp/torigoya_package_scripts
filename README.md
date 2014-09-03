@@ -27,3 +27,7 @@
 ### OCaml
 - [ ] head
 - [x] versioned
+
+### Gauche
+- [ ] head
+- [x] versioned
