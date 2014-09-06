@@ -14,7 +14,7 @@
 
 ### clang
 - [x] head
-- [ ] versioned
+- [x] versioned
 
 ### libc++
 - [x] head
