@@ -3,8 +3,43 @@
 # includes
 . _import.sh
 
-#
-FTPMirror="ftp://mirrors.kernel.org/gnu"
+
+case "$ProgramVersion" in
+    "head")
+        BranchName="master" ;;
+    "4.7.0")
+        BranchName="93c5ebd" ;;
+    "4.7.1")
+        BranchName="0e3097e" ;;
+    "4.7.2")
+        BranchName="c9b304a" ;;
+    "4.7.3")
+        BranchName="f22940c" ;;
+    "4.7.4")
+        BranchName="ae10eb8" ;;
+    "4.7")
+        BranchName="ae10eb8" ;;
+    "4.8.0")
+        BranchName="e9c762e" ;;
+    "4.8.1")
+        BranchName="caa62b4" ;;
+    "4.8.2")
+        BranchName="9bcca88" ;;
+    "4.8.3")
+        BranchName="6bbf0de" ;;
+    "4.8")
+        BranchName="6bbf0de" ;;
+    "4.9.0")
+        BranchName="a7aa383" ;;
+    "4.9.1")
+        BranchName="c6fa1b4" ;;
+    "4.9")
+        BranchName="c6fa1b4" ;;
+    *)
+        echo "GCC $ProgramVersion is not registered."
+        exit -1
+        ;;
+esac
 
 #
 PackageVersion=`make_package_version $ProgramVersion`
@@ -13,109 +48,83 @@ PackageVersion=`make_package_version $ProgramVersion`
 BuildWorkPath=`buildworkpath $Program`
 cd $BuildWorkPath
 
-if [ "$ProgramVersion" == "head" ]; then
-    ##################################################
-    # install HEAD package
-    ##################################################
-    if [ -e gcc ]; then
-        rm -rf gcc
-    fi
-    git clone --depth 1 git://gcc.gnu.org/git/gcc.git gcc
-
-    #
-    wget $FTPMirror/gmp/gmp-$GMPVersion.tar.bz2 -O gmp-$GMPVersion.tar.bz2
-    tar jxf gmp-$GMPVersion.tar.bz2
-
-    #
-    wget $FTPMirror/mpfr/mpfr-$MPFRVersion.tar.bz2 -O mpfr-$MPFRVersion.tar.bz2
-    tar jxf mpfr-$MPFRVersion.tar.bz2
-
-    #
-    wget $FTPMirror/mpc/mpc-$MPCVersion.tar.gz -O mpc-$MPCVersion.tar.gz
-    tar xzvf mpc-$MPCVersion.tar.gz
-
-    ls -al
-
-    #
-    cp -r gmp-$GMPVersion gcc/gmp
-    cp -r mpfr-$MPFRVersion gcc/mpfr
-    cp -r mpc-$MPCVersion gcc/mpc
-
-    #
+if [ -e gcc ]; then
     cd gcc
+    rm -rf gmp
+    rm -rf mpfr
+    rm -rf mpc
+    git checkout master
+    git pull
+    git checkout $BranchName
+    cd ..
+    if [ ! -e gmp-$GMPVersion.tar.xz ]; then
+        wget https://ftp.gnu.org/gnu/gmp/gmp-$GMPVersion.tar.xz -O gmp-$GMPVersion.tar.xz
+    fi
+    expand_tar gmp-$GMPVersion.tar.xz
+    mv gmp-$GMPVersion gcc/gmp
+    if [ ! -e mpfr-$MPFRVersion.tar.xz ]; then
+        wget http://www.mpfr.org/mpfr-$MPFRVersion/mpfr-$MPFRVersion.tar.xz -O mpfr-$MPFRVersion.tar.xz
+    fi
+    expand_tar mpfr-$MPFRVersion.tar.xz
+    mv mpfr-$MPFRVersion gcc/mpfr
+    if [ ! -e mpc-$MPCVersion.tar.gz ]; then
+        wget ftp://ftp.gnu.org/gnu/mpc/mpc-$MPCVersion.tar.gz -O mpc-$MPCVersion.tar.gz
+    fi
+    expand_tar mpc-$MPCVersion.tar.gz
+    mv mpc-$MPCVersion gcc/mpc
+else
+    git clone git://gcc.gnu.org/git/gcc.git gcc
+    cd gcc
+    git checkout $BranchName
+    cd ..
+    #
+    wget https://ftp.gnu.org/gnu/gmp/gmp-$GMPVersion.tar.xz -O gmp-$GMPVersion.tar.xz
+    expand_tar gmp-$GMPVersion.tar.xz
+    mv gmp-$GMPVersion gcc/gmp
+    #
+    wget http://www.mpfr.org/mpfr-$MPFRVersion/mpfr-$MPFRVersion.tar.xz -O mpfr-$MPFRVersion.tar.xz
+    expand_tar mpfr-$MPFRVersion.tar.xz
+    mv mpfr-$MPFRVersion gcc/mpfr
+    #
+    wget ftp://ftp.gnu.org/gnu/mpc/mpc-$MPCVersion.tar.gz -O mpc-$MPCVersion.tar.gz
+    expand_tar mpc-$MPCVersion.tar.gz
+    mv mpc-$MPCVersion gcc/mpc
+fi
 
+if [ "$ProgramVersion" == "head" ]; then
+    cd gcc
     Rev=`get_git_rev`
     RevedPackageVersion="$PackageVersion.$Rev"
     echo "Version => $RevedPackageVersion"
-
-    #
-    IFS="?";read Cur Conf <<< "`make_build_dir gcc-build`"
-    cd $Cur
-
-    InstallPrefix=$InstallPath/gcc.head
-
-    # configure
-    $Conf/configure \
-        --prefix=$InstallPrefix \
-        --enable-languages=c,c++,fortran,objc,obj-c++ \
-        --build=$BinarySystem \
-        --host=$BinarySystem \
-        --target=$BinarySystem \
-        --with-mpfr-include=$BuildWorkPath/gcc/mpfr/src \
-        --with-mpfr-lib=$Cur/mpfr/src/.libs \
-        --disable-nls \
-        --disable-multilib \
-        --disable-libstdcxx-pch \
-        --disable-bootstrap \
-        && make_edge_deb_from_dir gcc $RevedPackageVersion $Cur $InstallPrefix
-
+    cd ..
 else
-    ##################################################
-    # install VERSIONED package
-    ##################################################
-    wget $FTPMirror/gcc/gcc-$ProgramVersion/gcc-$ProgramVersion.tar.bz2 -O gcc-$ProgramVersion.tar.bz2
-    tar jxf gcc-$ProgramVersion.tar.bz2
+    echo "Version => $PackageVersion"
+fi
 
-    #
-    wget $FTPMirror/gmp/gmp-$GMPVersion.tar.bz2 -O gmp-$GMPVersion.tar.bz2
-    tar jxf gmp-$GMPVersion.tar.bz2
+#
+IFS="?" read Cur Conf <<< "`make_build_dir gcc-build`"
+cd $Cur
 
-    #
-    wget $FTPMirror/mpfr/mpfr-$MPFRVersion.tar.bz2 -O mpfr-$MPFRVersion.tar.bz2
-    tar jxf mpfr-$MPFRVersion.tar.bz2
+InstallPrefix=$InstallPath/gcc.$ProgramVersion
 
-    #
-    wget $FTPMirror/mpc/mpc-$MPCVersion.tar.gz -O mpc-$MPCVersion.tar.gz
-    tar xzvf mpc-$MPCVersion.tar.gz
+# configure
+$Conf/gcc/configure \
+    --prefix=$InstallPrefix \
+    --enable-languages=c,c++,fortran,objc,obj-c++ \
+    --build=$BinarySystem \
+    --host=$BinarySystem \
+    --target=$BinarySystem \
+    --disable-nls \
+    --disable-multilib \
+    --disable-libstdcxx-pch \
+    --disable-bootstrap \
 
-    ls -al
-
-    #
-    cp -r gmp-$GMPVersion gcc-$ProgramVersion/gmp
-    cp -r mpfr-$MPFRVersion gcc-$ProgramVersion/mpfr
-    cp -r mpc-$MPCVersion gcc-$ProgramVersion/mpc
-
-    #
-    cd gcc-$ProgramVersion
-
-    #
-    IFS="?";read Cur Conf <<< "`make_build_dir gcc-build`"
-    cd $Cur
-
-    InstallPrefix=$InstallPath/gcc.$PackageVersion
-
-    # configure
-    $Conf/configure \
-        --prefix=$InstallPrefix \
-        --enable-languages=c,c++,fortran,objc,obj-c++ \
-        --build=$BinarySystem \
-        --host=$BinarySystem \
-        --target=$BinarySystem \
-        --with-mpfr-include=$BuildWorkPath/gcc-$ProgramVersion/mpfr/src \
-        --with-mpfr-lib=$Cur/mpfr/src/.libs \
-        --disable-nls \
-        --disable-multilib \
-        --disable-libstdcxx-pch \
-        --disable-bootstrap \
-        && make_versioned_deb_from_dir gcc $PackageVersion $Cur $InstallPrefix
+if [ "$ProgramVersion" == "head" ]; then
+    C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/local/x86_64-linux-gnu
+    CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/usr/local/x86_64-linux-gnu
+    make_edge_deb_from_dir gcc $RevedPackageVersion $Cur $InstallPrefix
+else
+    C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/local/x86_64-linux-gnu
+    CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/usr/local/x86_64-linux-gnu
+    make_versioned_deb_from_dir gcc $PackageVersion $Cur $InstallPrefix
 fi

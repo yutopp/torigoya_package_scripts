@@ -24,11 +24,20 @@ function tar_option() {
         "tar.gz")
             echo "xvzf"
             ;;
+        "tar.xz")
+            echo "xvJf"
+            ;;
         *)
             echo "Un supported tar_option " $1
             exit -1
             ;;
     esac
+}
+
+
+#
+function expand_tar() {
+    tar `tar_option tar.${1##*.}` $1
 }
 
 

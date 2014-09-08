@@ -2,7 +2,7 @@
 
 #
 Program="gcc"
-ProgramVersion="head"
+ProgramVersion="4.7.2"
 
 #
 GMPVersion="6.0.0a"
