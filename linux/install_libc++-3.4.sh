@@ -2,7 +2,7 @@
 
 #
 Program="libc++"
-ProgramVersion="head"
+ProgramVersion="3.4"
 
 # call
 . _install_libc++.sh
