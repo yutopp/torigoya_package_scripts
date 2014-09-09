@@ -1,7 +1,8 @@
 #!/bin/bash
 
 #
-RawPackageVersion="head"
+Program="ftmp"
+ProgramVersion="head"
 
 # call
 . _install_ftmp.sh

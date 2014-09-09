@@ -4,58 +4,53 @@
 . _import.sh
 
 # please set this variable...
-#SPROUT
-#SPROUTVersion
+#Program
+#ProgramVersion
 
-RawPackageVersion=$SPROUTVersion
 #
-PackageName="sprout"
-PackageVersion=`make_package_version $RawPackageVersion`
+PackageVersion=`make_package_version $ProgramVersion`
 
 # set workspace path
-BuildWorkPath=`buildworkpath $PackageName`
+BuildWorkPath=`buildworkpath $Program`
 cd $BuildWorkPath
 
 #
-IFS="?";read Cur Conf <<< "`init_build $PackageName $PackageVersion`"
-cd $Cur
+if cd Sprout; then
+    git checkout master
+    git pull
+else
+    git clone https://github.com/bolero-MURAKAMI/Sprout
+    cd Sprout
+fi
+
+if [ "$ProgramVersion" == "head" ]; then
+    GitSproutVersion=`get_git_rev`
+    RevedPackageVersion="$PackageVersion.$GitBoostVersion"
+    echo "Version => $RevedPackageVersion"
+fi
 
 #
-if [ "$RawPackageVersion" == "head" ]; then
-    #
-    if [ ! -e Sprout ]; then
-        git clone https://github.com/bolero-MURAKAMI/Sprout.git
-    fi
-    cd Sprout
-    git pull origin master
-    cd ..
+cd ..
+IFS="?" read Cur Conf <<< "`make_build_dir $Program`"
+cd $Conf
 
+# header only
+# This is Edge version, so USE RawPackageVersion
+InstallPrefix=$InstallPath/sprout-$ProgramVersion
+IncludePath=$InstallPrefix/include
 
-    # header only
-    # This is Edge version, so USE RawPackageVersion
-    InstallDir=$InstallPath/sprout-$RawPackageVersion
+# remove previous file
+rm -rf $InstallPrefix
 
-    IncludePath=$InstallDir/include
-
-    # remove previous file
-    rm -rf $InstallDir
-
-cat <<EOF > Makefile
-dummy:
-	echo dummy
-
-all:
-	echo DO NOTHING
-
-install:
-	mkdir $InstallDir
-	mkdir --parents $IncludePath
-	cp -r Sprout/sprout $IncludePath/.
-EOF
+#
+if [ "$ProgramVersion" == "head" ]; then
+    mkdir $InstallPrefix
+    mkdir --parents $IncludePath
+    cp -r Sprout/sprout $IncludePath/.
 
     # DO NOT contain package version to name
-    make_edge_deb_from_dir $PackageName $PackageVersion $Cur $InstallDir
-
+    cd $Cur
+    pack_edge_deb_from_dir $Program $RevedPackageVersion $Cur $InstallPrefix
 else
     echo "not supported"
     exit -1

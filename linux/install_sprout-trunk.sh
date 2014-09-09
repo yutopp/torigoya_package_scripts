@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #
-SPROUT="sprout"
-SPROUTVersion="head"
+Program="sprout"
+ProgramVersion="head"
 
 # call
 . _install_sprout.sh
