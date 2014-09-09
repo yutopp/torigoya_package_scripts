@@ -37,7 +37,7 @@ cd $Conf
 
 # header only
 # This is Edge version, so USE RawPackageVersion
-InstallPrefix=$InstallPath/sprout-$ProgramVersion
+InstallPrefix=$InstallPath/$Program-$ProgramVersion
 IncludePath=$InstallPrefix/include
 
 # remove previous file

@@ -37,7 +37,7 @@ cd $Conf
 
 # header only
 # This is Edge version, so USE RawPackageVersion
-InstallPrefix=$InstallPath/ftmp-$ProgramVersion
+InstallPrefix=$InstallPath/$Program-$ProgramVersion
 
 # remove previous file
 rm -rf $InstallPrefix
