@@ -24,8 +24,9 @@ else
 fi
 
 if [ "$ProgramVersion" == "head" ]; then
-    GitSproutVersion=`get_git_rev`
-    RevedPackageVersion="$PackageVersion.$GitBoostVersion"
+    GitRev=`get_git_rev`
+    echo "Git rev => $GitRev"
+    RevedPackageVersion="$PackageVersion.$GitRev"
     echo "Version => $RevedPackageVersion"
 fi
 
