@@ -18,7 +18,7 @@
 
 ### libc++
 - [x] head
-- [ ] versioned
+- [x] versioned
 
 ### Sprout
 - [x] head
