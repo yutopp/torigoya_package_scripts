@@ -89,7 +89,7 @@ else
     cd clang
     git checkout release_$IntegerPackageVersion
     cd ..
-    if [ $IntegerPackageVersion -gt 32 ]; then
+    if [ $IntegerPackageVersion -ge 32 ]; then
         cd extra
         git checkout release_$IntegerPackageVersion
         cd ..
@@ -120,7 +120,7 @@ IFS="?" read Cur Conf <<< "`make_build_dir clang-build`"
 cd $Cur
 
 # This is Edge version, so DO NOT USE RevedPackageVersion
-InstallPrefix=$InstallPath/clang.$ProgramVersion
+InstallPrefix=$InstallPath/$Program.$ProgramVersion
 
 # This is Edge version, so DO NOT USE versioned_deb
 $Conf/llvm/configure \
@@ -130,7 +130,7 @@ $Conf/llvm/configure \
     --enable-assertions=no \
     --enable-targets=host-only
 if [ "$ProgramVersion" == "head" ]; then
-    make_edge_deb_from_dir clang $RevedPackageVersion $Cur $InstallPrefix
+    make_edge_deb_from_dir $Program $RevedPackageVersion $Cur $InstallPrefix
 else
-    make_versioned_deb_from_dir clang $PackageVersion $Cur $InstallPrefix
+    make_versioned_deb_from_dir $Program $PackageVersion $Cur $InstallPrefix
 fi
