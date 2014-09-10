@@ -8,7 +8,9 @@ case "$ProgramVersion" in
     "head")
         BranchName="master" ;;
     "4.7.0")
-        BranchName="93c5ebd" ;;
+        BranchName="93c5ebd"
+        export MAKEINFO=missing
+        ;;
     "4.7.1")
         BranchName="0e3097e" ;;
     "4.7.2")
