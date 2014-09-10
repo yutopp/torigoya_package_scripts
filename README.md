@@ -20,10 +20,6 @@
 - [x] head
 - [x] versioned
 
-### Sprout
-- [x] head
-- [ ] versioned
-
 ### OCaml
 - [ ] head
 - [x] versioned
@@ -31,3 +27,7 @@
 ### Gauche
 - [ ] head
 - [x] versioned
+
+### Sprout
+- [x] head
+- [ ] versioned
