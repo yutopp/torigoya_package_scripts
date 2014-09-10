@@ -70,7 +70,7 @@ if [ -e gcc ]; then
     expand_tar mpfr-$MPFRVersion.tar.xz
     mv mpfr-$MPFRVersion gcc/mpfr
     if [ ! -e mpc-$MPCVersion.tar.gz ]; then
-        wget ftp://ftp.gnu.org/gnu/mpc/mpc-$MPCVersion.tar.gz -O mpc-$MPCVersion.tar.gz
+        wget http://www.multiprecision.org/mpc/download/mpc-$MPCVersion.tar.gz -O mpc-$MPCVersion.tar.gz
     fi
     expand_tar mpc-$MPCVersion.tar.gz
     mv mpc-$MPCVersion gcc/mpc
