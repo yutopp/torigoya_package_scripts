@@ -116,6 +116,8 @@ $Conf/gcc/configure \
     --disable-multilib \
     --disable-libstdcxx-pch \
     --disable-bootstrap \
+    --with-mpfr-include=$Conf/gcc/mpfr/src \
+    --with-mpfr-lib=$Cur/mpfr/src/.libs
 
 if [ "$ProgramVersion" == "head" ]; then
     C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/local/x86_64-linux-gnu
