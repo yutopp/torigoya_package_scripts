@@ -59,43 +59,35 @@ if [ -e gcc ]; then
     git pull
     git checkout $BranchName
     cd ..
-    if [ ! -e gmp-$GMPVersion.tar.xz ]; then
-        wget https://ftp.gnu.org/gnu/gmp/gmp-$GMPVersion.tar.xz -O gmp-$GMPVersion.tar.xz
-    fi
-    expand_tar gmp-$GMPVersion.tar.xz || exit -1
-    mv gmp-$GMPVersion gcc/gmp || exit -1
 
-    if [ ! -e mpfr-$MPFRVersion.tar.xz ]; then
-        wget http://www.mpfr.org/mpfr-$MPFRVersion/mpfr-$MPFRVersion.tar.xz -O mpfr-$MPFRVersion.tar.xz
-    fi
-    expand_tar mpfr-$MPFRVersion.tar.xz || exit -1
-    mv mpfr-$MPFRVersion gcc/mpfr || exit -1
-
-    if [ ! -e mpc-$MPCVersion.tar.gz ]; then
-        wget http://www.multiprecision.org/mpc/download/mpc-$MPCVersion.tar.gz -O mpc-$MPCVersion.tar.gz
-    fi
-    expand_tar mpc-$MPCVersion.tar.gz || exit -1
-    mv mpc-$MPCVersion gcc/mpc || exit -1
 else
     git clone git://gcc.gnu.org/git/gcc.git gcc
     cd gcc
     git checkout $BranchName
     cd ..
-    #
+fi
+
+#
+if [ ! -e gmp-$GMPVersion ]; then
     wget https://ftp.gnu.org/gnu/gmp/gmp-$GMPVersion.tar.xz -O gmp-$GMPVersion.tar.xz
     expand_tar gmp-$GMPVersion.tar.xz || exit -1
-    mv gmp-$GMPVersion gcc/gmp || exit -1
+fi
+mv gmp-$GMPVersion gcc/gmp || exit -1
 
-    #
+#
+if [ ! -e mpfr-$MPFRVersion ]; then
     wget http://www.mpfr.org/mpfr-$MPFRVersion/mpfr-$MPFRVersion.tar.xz -O mpfr-$MPFRVersion.tar.xz
     expand_tar mpfr-$MPFRVersion.tar.xz || exit -1
-    mv mpfr-$MPFRVersion gcc/mpfr || exit -1
+fi
+mv mpfr-$MPFRVersion gcc/mpfr || exit -1
 
-    #
+#
+if [ ! -e mpc-$MPCVersion ]; then
     wget http://www.multiprecision.org/mpc/download/mpc-$MPCVersion.tar.gz -O mpc-$MPCVersion.tar.gz
     expand_tar mpc-$MPCVersion.tar.gz || exit -1
-    mv mpc-$MPCVersion gcc/mpc || exit -1
 fi
+mv mpc-$MPCVersion gcc/mpc || exit -1
+
 
 if [ "$ProgramVersion" == "head" ]; then
     cd gcc
