@@ -6,27 +6,27 @@
 - [x] head
 - [x] versioned
 
-### dmd
+#### dmd
 - [x] head
 - [x] versioned
 
-### ruby
+#### ruby
 - [x] head
 - [ ] versioned
 
-### clang
+#### clang
 - [x] head
 - [x] versioned
 
-### libc++
+#### libc++
 - [x] head
 - [x] versioned
 
-### OCaml
+#### OCaml
 - [ ] head
 - [x] versioned
 
-### Gauche
+#### Gauche
 - [ ] head
 - [x] versioned
 
@@ -44,77 +44,77 @@
 
 `C++` *header only*
 
-### atto-test
+#### atto-test
 - [x] head
 - [ ] versioned
 `/atto-test.<version>`
 
 `C++`
 
-### CEL
+#### CEL
 - [x] head
 - [ ] versioned
 `/cel.<version>`
 
 `C++` *header only*
 
-### desalt
+#### desalt
 - [x] head
 - [ ] versioned
 `/desalt.<version>`
 
 `C++` *header only*
 
-### etude
+#### etude
 - [x] head
 - [ ] versioned
 `/etude.<version>`
 
 `C++` *header only*
 
-### FrozenString
+#### FrozenString
 - [x] head
 - [ ] versioned
 `/frozenstring.<version>`
 
 `C++` *header only*
 
-### Gene
+#### Gene
 - [x] head
 - [ ] versioned
 `/gene.<version>`
 
 `C++` *header only*
 
-### hwm
+#### hwm
 - [x] head
 - [ ] versioned
 `/hwm.<version>`
 
 `C++` *header only*
 
-### konata
+#### konata
 - [x] head
 - [ ] versioned
 `/konata.<version>`
 
 `C++` *header only*
 
-### mpllibs
+#### mpllibs
 - [x] head
 - [ ] versioned
 `/mpllibs.<version>`
 
 `C++` *header only*
 
-### ntfmt
+#### ntfmt
 - [x] head
 - [ ] versioned
 `/ntfmt.<version>`
 
 `C++` *header only*
 
-### pficommon
+#### pficommon
 - [x] head
 - [ ] versioned
 
@@ -122,84 +122,84 @@
 
 `C++`
 
-### picojson
+#### picojson
 - [x] head
 - [ ] versioned
 `/picojson.<version>`
 
 `C++` *header only*
 
-### picostring
+#### picostring
 - [x] head
 - [ ] versioned
 `/picostring.<version>`
 
 `C++` *header only*
 
-### p-stade
+#### p-stade
 - [x] head
 - [ ] versioned
 `/pstade.<version>`
 
 `C++` *header only*
 
-### rapidmp
+#### rapidmp
 - [x] head
 - [ ] versioned
 `/rapidmp.<version>`
 
 `C++` *header only*
 
-### Shand
+#### Shand
 - [x] head
 - [ ] versioned
 `/shand.<version>`
 
 `C++` *header only*
 
-### shiro
+#### shiro
 - [x] head
 - [ ] versioned
 `/shiro.<version>`
 
 `C++` *header only*
 
-### Sprig
+#### Sprig
 - [x] head
 - [ ] versioned
 `/sprig.<version>`
 
 `C++` *header only*
 
-### cpp-TimSort
+#### cpp-TimSort
 - [x] head
 - [ ] versioned
 `/timsort.<version>`
 
 `C++` *header only*
 
-### toki
+#### toki
 - [x] head
 - [ ] versioned
 `/toki.<version>`
 
 `C++` *header only*
 
-### twit-library
+#### twit-library
 - [x] head
 - [ ] versioned
 `/twit-library.<version>`
 
 `C++` *header only*
 
-### veiler
+#### veiler
 - [x] head
 - [ ] versioned
 `/veiler.<version>`
 
 `C++` *header only*
 
-### ytl
+#### ytl
 - [x] head
 - [ ] versioned
 `/ytl.<version>`
