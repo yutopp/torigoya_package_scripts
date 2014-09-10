@@ -46,7 +46,7 @@ if [ "$ReuseBuildDir" == "0" ]; then
     fi
 fi
 
-InstallPrefix=$InstallPath/boost-$ProgramVersion
+InstallPrefix=$InstallPath/boost.$ProgramVersion
 ./b2 install -j$CPUCore --prefix=$InstallPrefix link=static,shared variant=release --without-mpi --without-iostreams --without-python
 cd $Cur
 if [ "$ProgramVersion" == "head" ]; then

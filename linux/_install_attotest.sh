@@ -48,7 +48,7 @@ if [ "$ProgramVersion" == "head" ]; then
     mkdir --parents $IncludePath
     mkdir --parents $LibPath
     cd atto-test
-    echo "BOOST_INCLUDE := $InstallPrefix/../boost-head/include" >config.mk
+    echo "BOOST_INCLUDE := $InstallPrefix/../boost.head/include" >config.mk
     make build -j$CPUCore
     cp -r include/atto-test $IncludePath
     cp src/libattotest.so $LibPath
