@@ -1,6 +1,8 @@
 # Packaging scripts
 ## Linux
-### gcc
+
+### Compiler
+#### gcc
 - [x] head
 - [x] versioned
 
@@ -28,149 +30,178 @@
 - [ ] head
 - [x] versioned
 
-### Sprout
+### Library
+#### Sprout
 - [x] head
 - [ ] versioned
+
 *header only*
 
 ### Array View
 - [x] head
 - [ ] versioned
 `/array_view.<version>`
-*header only*
 
-### Atto Test
+`C++` *header only*
+
+### atto-test
 - [x] head
 - [ ] versioned
 `/atto-test.<version>`
+
+`C++`
 
 ### CEL
 - [x] head
 - [ ] versioned
 `/cel.<version>`
-*header only*
+
+`C++` *header only*
 
 ### desalt
 - [x] head
 - [ ] versioned
 `/desalt.<version>`
-*header only*
+
+`C++` *header only*
 
 ### etude
 - [x] head
 - [ ] versioned
 `/etude.<version>`
-*header only*
+
+`C++` *header only*
 
 ### FrozenString
 - [x] head
 - [ ] versioned
 `/frozenstring.<version>`
-*header only*
+
+`C++` *header only*
 
 ### Gene
 - [x] head
 - [ ] versioned
 `/gene.<version>`
-*header only*
+
+`C++` *header only*
 
 ### hwm
 - [x] head
 - [ ] versioned
 `/hwm.<version>`
-*header only*
+
+`C++` *header only*
 
 ### konata
 - [x] head
 - [ ] versioned
 `/konata.<version>`
-*header only*
+
+`C++` *header only*
 
 ### mpllibs
 - [x] head
 - [ ] versioned
 `/mpllibs.<version>`
-*header only*
+
+`C++` *header only*
 
 ### ntfmt
 - [x] head
 - [ ] versioned
 `/ntfmt.<version>`
-*header only*
+
+`C++` *header only*
 
 ### pficommon
 - [x] head
 - [ ] versioned
+
 `/pficommon.<version>`
+
+`C++`
 
 ### picojson
 - [x] head
 - [ ] versioned
 `/picojson.<version>`
-*header only*
+
+`C++` *header only*
 
 ### picostring
 - [x] head
 - [ ] versioned
 `/picostring.<version>`
-*header only*
+
+`C++` *header only*
 
 ### p-stade
 - [x] head
 - [ ] versioned
 `/pstade.<version>`
-*header only*
+
+`C++` *header only*
 
 ### rapidmp
 - [x] head
 - [ ] versioned
 `/rapidmp.<version>`
-*header only*
+
+`C++` *header only*
 
 ### Shand
 - [x] head
 - [ ] versioned
 `/shand.<version>`
-*header only*
+
+`C++` *header only*
 
 ### shiro
 - [x] head
 - [ ] versioned
 `/shiro.<version>`
-*header only*
+
+`C++` *header only*
 
 ### Sprig
 - [x] head
 - [ ] versioned
 `/sprig.<version>`
-*header only*
+
+`C++` *header only*
 
 ### cpp-TimSort
 - [x] head
 - [ ] versioned
 `/timsort.<version>`
-*header only*
+
+`C++` *header only*
 
 ### toki
 - [x] head
 - [ ] versioned
 `/toki.<version>`
-*header only*
+
+`C++` *header only*
 
 ### twit-library
 - [x] head
 - [ ] versioned
 `/twit-library.<version>`
-*header only*
+
+`C++` *header only*
 
 ### veiler
 - [x] head
 - [ ] versioned
 `/veiler.<version>`
-*header only*
+
+`C++` *header only*
 
 ### ytl
 - [x] head
 - [ ] versioned
 `/ytl.<version>`
-*header only*
+
+`C++` *header only*
