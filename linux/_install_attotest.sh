@@ -35,9 +35,7 @@ cd ..
 IFS="?" read Cur Conf <<< "`make_build_dir $Program`"
 cd $Conf
 
-# header only
-# This is Edge version, so USE RawPackageVersion
-InstallPrefix=$InstallPath/$Program-$ProgramVersion
+InstallPrefix=$InstallPath/$Program.$ProgramVersion
 IncludePath=$InstallPrefix/include
 LibPath=$InstallPrefix/lib
 
