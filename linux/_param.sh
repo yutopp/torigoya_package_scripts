@@ -32,29 +32,55 @@ if [ "$PARAM_INSTALLPATH" == "" ]; then
 fi
 InstallPath=$PARAM_INSTALLPATH
 
+
 ########################################
 # Year
-if [ "$PARAM_YEAR" == "" ]; then
-    echo "[5]"
+if [ "$PARAM_TIMESTAMP_YEAR" == "" ]; then
+    echo "[ts.1]"
     exit -1
 fi
-Year=$PARAM_YEAR
+Year=$PARAM_TIMESTAMP_YEAR
 
 ########################################
 # Month
-if [ "$PARAM_MONTH" == "" ]; then
-    echo "[6]"
+if [ "$PARAM_TIMESTAMP_MONTH" == "" ]; then
+    echo "[ts.2]"
     exit -1
 fi
-Month=$PARAM_MONTH
+Month=$PARAM_TIMESTAMP_MONTH
 
 ########################################
 # Day
-if [ "$PARAM_DAY" == "" ]; then
-    echo "[7]"
+if [ "$PARAM_TIMESTAMP_DAY" == "" ]; then
+    echo "[ts.3]"
     exit -1
 fi
-Day=$PARAM_DAY
+Day=$PARAM_TIMESTAMP_DAY
+
+########################################
+# Hour
+if [ "$PARAM_TIMESTAMP_HOUR" == "" ]; then
+    echo "[ts.4]"
+    exit -1
+fi
+Hour=$PARAM_TIMESTAMP_HOUR
+
+########################################
+# Minute
+if [ "$PARAM_TIMESTAMP_MIN" == "" ]; then
+    echo "[ts.5]"
+    exit -1
+fi
+Min=$PARAM_TIMESTAMP_MIN
+
+########################################
+# Second
+if [ "$PARAM_TIMESTAMP_SEC" == "" ]; then
+    echo "[ts.6]"
+    exit -1
+fi
+Sec=$PARAM_TIMESTAMP_SEC
+
 
 ########################################
 # PlaceholderResultPath

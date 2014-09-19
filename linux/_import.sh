@@ -133,17 +133,17 @@ function make_package_version() {
     case $target_version in
         'head')
             # edge version
-            echo "999.$Year.$Month.$Day"
+            echo "999.$Year.$Month.$Day.$Hour.$Min.$Sec"
             ;;
 
         'dev')
             # edge version
-            echo "888.$Year.$Month.$Day"
+            echo "888.$Year.$Month.$Day.$Hour.$Min.$Sec"
             ;;
 
         'stable')
             # edge version
-            echo "777.$Year.$Month.$Day"
+            echo "777.$Year.$Month.$Day.$Hour.$Min.$Sec"
             ;;
 
         *)
