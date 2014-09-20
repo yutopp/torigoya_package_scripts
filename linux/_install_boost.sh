@@ -27,6 +27,8 @@ else
 fi
 
 if [ "$ProgramVersion" == "head" ]; then
+    git checkout develop
+    git submodule update
     GitBoostVersion=`get_git_rev`
     RevedPackageVersion="$PackageVersion.$GitBoostVersion"
     echo "Version => $RevedPackageVersion"
