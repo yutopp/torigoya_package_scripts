@@ -35,6 +35,8 @@ case "$ProgramVersion" in
         BranchName="a7aa383" ;;
     "4.9.1")
         BranchName="c6fa1b4" ;;
+    "4.9.2")
+        BranchName="c1283af" ;;
     "4.9")
         BranchName="c6fa1b4" ;;
     *)
