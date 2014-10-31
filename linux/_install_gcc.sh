@@ -74,21 +74,21 @@ if [ ! -e gmp-$GMPDir ]; then
     wget https://ftp.gnu.org/gnu/gmp/gmp-$GMPVersion.tar.xz -O gmp-$GMPVersion.tar.xz
     expand_tar gmp-$GMPVersion.tar.xz || exit -1
 fi
-cp gmp-$GMPDir gcc/gmp || exit -1
+cp -r gmp-$GMPDir gcc/gmp || exit -1
 
 #
 if [ ! -e mpfr-$MPFRVersion ]; then
     wget http://www.mpfr.org/mpfr-$MPFRVersion/mpfr-$MPFRVersion.tar.xz -O mpfr-$MPFRVersion.tar.xz
     expand_tar mpfr-$MPFRVersion.tar.xz || exit -1
 fi
-cp mpfr-$MPFRVersion gcc/mpfr || exit -1
+cp -r mpfr-$MPFRVersion gcc/mpfr || exit -1
 
 #
 if [ ! -e mpc-$MPCVersion ]; then
     wget http://www.multiprecision.org/mpc/download/mpc-$MPCVersion.tar.gz -O mpc-$MPCVersion.tar.gz
     expand_tar mpc-$MPCVersion.tar.gz || exit -1
 fi
-cp mpc-$MPCVersion gcc/mpc || exit -1
+cp -r mpc-$MPCVersion gcc/mpc || exit -1
 
 
 if [ "$ProgramVersion" == "head" ]; then
