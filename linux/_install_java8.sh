@@ -49,10 +49,14 @@ if [ "$ProgramVersion" == "head" ]; then
 
     echo $InstallDir
 
+
     if [ -e test_build ]; then
-        rm -rf test_build
+        if [ "$ReuseBuildDir" == "0" ]; then
+            rm -rf test_build
+        fi
+    else
+        mkdir test_build
     fi
-    mkdir test_build
     cd test_build
     Cur=`pwd`
 
@@ -63,7 +67,7 @@ if [ "$ProgramVersion" == "head" ]; then
          --prefix=$InstallPrefix \
         && make all JOBS=4 \
         && make install \
-        && bash -c 'find $InstallPrefix -perm 600 | xargs chmod 644' \
+        && bash -c "find $InstallPrefix -perm 600 | xargs chmod 644" \
         && pack_edge_deb_from_dir java8 \
                                   $RevedPackageVersion \
                                   $Cur \
