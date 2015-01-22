@@ -54,6 +54,8 @@ if [ "$ProgramVersion" == "head" ]; then
     fi
     mkdir test_build
     cd test_build
+    Cur=`pwd`
+
     export LANG=C
 
     # This is Edge version, so DO NOT USE versioned_deb
@@ -64,7 +66,7 @@ if [ "$ProgramVersion" == "head" ]; then
         && bash -c 'find $InstallPrefix -perm 600 | xargs chmod 644' \
         && pack_edge_deb_from_dir java8 \
                                   $RevedPackageVersion \
-                                  $Cur/java8/test_build \
+                                  $Cur \
                                   $InstallPrefix \
                                   ""
 
