@@ -6,12 +6,13 @@
 # regargs "openjdk-7-jdk" is already installed
 # saku of kuniku
 # packages for bootstrap
-sudo apt-get install -y openjdk-7-jdk
-sudo apt-get install -y libX11-dev libxext-dev libxrender-dev libxtst-dev libxt-dev
-sudo apt-get install -y libcups2-dev
-sudo apt-get install -y libfreetype6-dev
-sudo apt-get install -y libasound2-dev
-sudo apt-get install -y ccache
+sudo apt-get -y update
+sudo apt-get -y install openjdk-7-jdk
+sudo apt-get -y install libX11-dev libxext-dev libxrender-dev libxtst-dev libxt-dev
+sudo apt-get -y install libcups2-dev
+sudo apt-get -y install libfreetype6-dev
+sudo apt-get -y install libasound2-dev
+sudo apt-get -y install ccache
 
 #
 PackageVersion=`make_package_version $ProgramVersion`
