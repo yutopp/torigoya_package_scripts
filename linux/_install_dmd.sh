@@ -16,6 +16,20 @@ cd $Cur
 
 #
 if [ "$ProgramVersion" == "head" ]; then
+    if [ "$ReuseBuildDir" == "0" ]; then
+        if [ -e dmd ]; then
+            rm -rf dmd
+        fi
+
+        if [ -e druntime ]; then
+            rm -rf druntime
+        fi
+
+        if [ -e phobos ]; then
+            rm -rf druntime
+        fi
+    fi
+
     if [ ! -e dmd ]; then
         git clone https://github.com/D-Programming-Language/dmd.git
     else
