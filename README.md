@@ -30,6 +30,10 @@
 - [ ] head
 - [x] versioned
 
+#### OpenJDK8
+- [x] head
+- [ ] versioned
+
 ### Library
 #### Sprout
 - [x] head
