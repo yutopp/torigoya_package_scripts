@@ -78,6 +78,10 @@ if [ "$ProgramVersion" == "head" ]; then
     # install
     InstallPrefix=$InstallPath/dmd.head
 
+    if [ -e $InstallPrefix ]; then
+        rm -rf $InstallPrefix
+    fi
+
     #
     cd dmd/src
     mkdir -p $InstallPrefix/bin
