@@ -13,7 +13,7 @@ case "$ProgramVersion" in
         export MAKEINFO=missing
         ;;
     *)
-        BranchName="gcc-${$ProgramVersion:0:1}_${$ProgramVersion:2:1}_${$ProgramVersion:4:1}-release" ;;
+        BranchName="gcc-${ProgramVersion:0:1}_${ProgramVersion:2:1}_${ProgramVersion:4:1}-release" ;;
 esac
 
 #
