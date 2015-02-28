@@ -9,41 +9,11 @@ case "$ProgramVersion" in
     "head")
         BranchName="master" ;;
     "4.7.0")
-        BranchName="93c5ebd"
+        BranchName="gcc-4_7_0-release"
         export MAKEINFO=missing
         ;;
-    "4.7.1")
-        BranchName="0e3097e" ;;
-    "4.7.2")
-        BranchName="c9b304a" ;;
-    "4.7.3")
-        BranchName="f22940c" ;;
-    "4.7.4")
-        BranchName="ae10eb8" ;;
-    "4.7")
-        BranchName="ae10eb8" ;;
-    "4.8.0")
-        BranchName="e9c762e" ;;
-    "4.8.1")
-        BranchName="caa62b4" ;;
-    "4.8.2")
-        BranchName="9bcca88" ;;
-    "4.8.3")
-        BranchName="6bbf0de" ;;
-    "4.8")
-        BranchName="6bbf0de" ;;
-    "4.9.0")
-        BranchName="a7aa383" ;;
-    "4.9.1")
-        BranchName="c6fa1b4" ;;
-    "4.9.2")
-        BranchName="c1283af" ;;
-    "4.9")
-        BranchName="c6fa1b4" ;;
     *)
-        echo "GCC $ProgramVersion is not registered."
-        exit -1
-        ;;
+        BranchName="gcc-${$ProgramVersion:0:1}_${$ProgramVersion:2:1}_${$ProgramVersion:4:1}-release" ;;
 esac
 
 #
