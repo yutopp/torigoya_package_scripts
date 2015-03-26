@@ -110,7 +110,8 @@ else
     #
     if [ "$ReuseBuildDir" == "0" ]; then
         # "dmd2" will be created on this path
-        wget http://downloads.dlang.org/releases/$DMDReleaseYear/dmd.$PackageVersion.zip
+        wget http://ftp.digitalmars.com/dmd.$PackageVersion.zip
+        # wget http://downloads.dlang.org/releases/$DMDReleaseYear/dmd.$PackageVersion.zip
         unzip -o dmd.$PackageVersion.zip
     fi
 
