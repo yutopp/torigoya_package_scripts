@@ -3,15 +3,9 @@
 # includes
 . _import.sh
 
-GMPDir="${GMPVersion%a}"
-
 case "$ProgramVersion" in
     "head")
         BranchName="master" ;;
-    "4.7.0")
-        BranchName="gcc-4_7_0-release"
-        export MAKEINFO=missing
-        ;;
     *)
         BranchName="gcc-${ProgramVersion:0:1}_${ProgramVersion:2:1}_${ProgramVersion:4:1}-release" ;;
 esac
@@ -22,12 +16,18 @@ PackageVersion=`make_package_version $ProgramVersion`
 # set workspace path
 BuildWorkPath=`buildworkpath $Program`
 cd $BuildWorkPath
+if [ -e prerequisites ]; then
+    cd prerequisites
+    rm -rf gmp_src
+    rm -rf mpfr_src
+    rm -rf mpc_src
+    cd ..
+else
+    mkdir prerequisites
+fi
 
 if [ -e gcc ]; then
     cd gcc
-    rm -rf gmp
-    rm -rf mpfr
-    rm -rf mpc
     git checkout master
     git pull
     git checkout $BranchName
@@ -40,26 +40,83 @@ else
 fi
 
 #
-if [ ! -e gmp-$GMPDir ]; then
-    wget https://ftp.gnu.org/gnu/gmp/gmp-$GMPVersion.tar.xz -O gmp-$GMPVersion.tar.xz
-    expand_tar gmp-$GMPVersion.tar.xz || exit -1
+if [ -e gmp ]; then
+    cd gmp
+    hg pull -u
+    cd ..
+else
+    hg clone https://gmplib.org/repo/gmp/
 fi
-cp -r gmp-$GMPDir gcc/gmp || exit -1
+cp -r gmp -T prerequisites/gmp_src || exit -1
+cd prerequisites/gmp_src
+case "$GMPVersion" in
+    "head")
+        GMPBranchName="default" ;;
+    "6.0.0" | "6.0.0a")
+        GMPBranchName="301ce2788826" ;;
+    "5.1.1")
+        GMPBranchName="rel-5.1.1" ;;
+    *)
+        echo "cannot catch GNU MP $GMPVersion by _install_gcc scripts" && exit -1
+esac
+hg up $GMPBranchName
+autoreconf -i
+automake
+./.bootstrap
+./configure --prefix=`pwd`/../gmp/$GMPVersion
+(make -j$CPUCore && make install) || exit -1
+cd ../..
 
 #
-if [ ! -e mpfr-$MPFRVersion ]; then
-    wget http://www.mpfr.org/mpfr-$MPFRVersion/mpfr-$MPFRVersion.tar.xz -O mpfr-$MPFRVersion.tar.xz
-    expand_tar mpfr-$MPFRVersion.tar.xz || exit -1
+if [ ! -e mpfr ]; then
+    mkdir mpfr
+    mkdir mpfr/tags
 fi
-cp -r mpfr-$MPFRVersion gcc/mpfr || exit -1
+if [ $MPFRVersion == "head" ]; then
+    cd mpfr
+    if [ -e trunk ]; then
+        cd trunk
+        svn up
+        cd ..
+    else
+        svn co svn://scm.gforge.inria.fr/svn/mpfr/trunk trunk
+    fi
+    cp -r trunk -T ../prerequisites/mpfr_src || exit -1
+    cd ../prerequisites/mpfr_src
+    ./autogen.sh
+    ./configure --prefix=`pwd`/../mpfr/$MPFRVersion --with-gmp=`pwd`/../gmp/$GMPVersion
+    (make -j$CPUCore && make install) || exit -1
+    cd ../..
+else
+    cd mpfr/tags
+    if [ ! -e $MPFRVersion ]; then
+        svn co svn://scm.gforge.inria.fr/svn/mpfr/tags/$MPFRVersion $MPFRVersion
+    fi
+    cp -r $MPFRVersion -T ../../prerequisites/mpfr_src || exit -1
+    cd ../../prerequisites/mpfr_src
+    autoreconf -i
+    ./configure --prefix=`pwd`/../mpfr/$MPFRVersion --with-gmp=`pwd`/../gmp/$GMPVersion
+    (make -j$CPUCore && make install) || exit -1
+    cd ../..
+fi
 
 #
-if [ ! -e mpc-$MPCVersion ]; then
-    wget http://www.multiprecision.org/mpc/download/mpc-$MPCVersion.tar.gz -O mpc-$MPCVersion.tar.gz
-    expand_tar mpc-$MPCVersion.tar.gz || exit -1
+if [ -e mpc ]; then
+    cd mpc
+    git pull
+    cd ..
+else
+    git clone https://gforge.inria.fr/git/mpc/mpc.git
 fi
-cp -r mpc-$MPCVersion gcc/mpc || exit -1
-
+cp -r mpc -T prerequisites/mpc_src || exit -1
+cd prerequisites/mpc_src
+if [ "$MPCVersion" != "head" ]; then
+    git checkout $MPCVersion
+fi
+autoreconf -i
+./configure --prefix=`pwd`/../mpc/$MPCVersion --with-gmp=`pwd`/../gmp/$GMPVersion --with-mpfr=`pwd`/../mpfr/$MPFRVersion
+(make -j$CPUCore && make install) || exit -1
+cd ../..
 
 if [ "$ProgramVersion" == "head" ]; then
     cd gcc
@@ -72,10 +129,26 @@ else
 fi
 
 #
-IFS="?" read Cur Conf <<< "`make_build_dir gcc-build`"
+IFS="?" read Cur Conf <<< "`make_build_dir gcc`"
 cd $Cur
 
 InstallPrefix=$InstallPath/gcc.$ProgramVersion
+
+case "$ProgramVersion" in
+    "4.7.0" | "4.7.1" | "4.7.2")
+        export MAKEINFO=missing ;;
+esac
+
+if [ "$ProgramVersion" == "head" ]; then
+    Bootstrap=disable
+else
+    Bootstrap=enable
+fi
+
+cp -r $Conf/prerequisites/gmp/$GMPVersion/* $InstallPrefix/
+cp -r $Conf/prerequisites/mpfr/$MPFRVersion/* $InstallPrefix/
+cp -r $Conf/prerequisites/mpc/$MPCVersion/* $InstallPrefix/
+
 
 # configure
 $Conf/gcc/configure \
@@ -87,16 +160,16 @@ $Conf/gcc/configure \
     --disable-nls \
     --disable-multilib \
     --disable-libstdcxx-pch \
-    --disable-bootstrap \
-    --with-mpfr-include=$Conf/gcc/mpfr/src \
-    --with-mpfr-lib=$Cur/mpfr/src/.libs
+    --${Bootstrap}-bootstrap \
+    --with-gmp=$InstallPrefix \
+    --with-mpfr=$InstallPrefix \
+    --with-mpc=$InstallPrefix \
+
+export LIBRARY_PATH=/usr/lib/x86_64-linux-gnu
 
 if [ "$ProgramVersion" == "head" ]; then
-    C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/local/x86_64-linux-gnu
-    CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/usr/local/x86_64-linux-gnu
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$InstallPrefix/lib
     make_edge_deb_from_dir gcc $RevedPackageVersion $Cur $InstallPrefix
 else
-    C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/local/x86_64-linux-gnu
-    CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/usr/local/x86_64-linux-gnu
     make_versioned_deb_from_dir gcc $PackageVersion $Cur $InstallPrefix
 fi

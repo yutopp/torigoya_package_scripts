@@ -5,13 +5,13 @@ Program="gcc"
 ProgramVersion="head"
 
 #
-GMPVersion="6.0.0a"
+GMPVersion="head"
 
 #
-MPFRVersion="3.1.2"
+MPFRVersion="head"
 
 #
-MPCVersion="1.0.2"
+MPCVersion="head"
 
 # call
 . _install_gcc.sh
