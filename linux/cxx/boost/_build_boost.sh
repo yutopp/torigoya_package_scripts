@@ -7,6 +7,8 @@
 # please set this variable...
 #Program
 #ProgramVersion
+#Toolset
+#ToolsetVersion
 
 #
 PackageVersion=`make_package_version $ProgramVersion`
@@ -15,15 +17,14 @@ PackageVersion=`make_package_version $ProgramVersion`
 BuildWorkPath=`buildworkpath $Program`
 cd $BuildWorkPath
 
-if cd boost; then
+if [ -e boost ]; then
+    cd boost
     git checkout master
     git pull
     git submodule update
 else
     git clone --recursive https://github.com/boostorg/boost
     cd boost
-    ./bootstrap.sh
-    ./b2 headers
 fi
 
 if [ "$ProgramVersion" == "head" ]; then
@@ -35,8 +36,12 @@ if [ "$ProgramVersion" == "head" ]; then
 else
     git checkout $Program-$ProgramVersion
     git submodule update
+    cd tools/build
+    git checkout develop
+    cd ../..
     echo "Version => $PackageVersion"
 fi
+rm -rf project-config.jam*
 
 cd ..
 IFS="?" read Cur Conf <<< "`make_build_dir boost-package`"
@@ -48,12 +53,8 @@ if [ "$ReuseBuildDir" == "0" ]; then
     fi
 fi
 
-InstallPrefix=$InstallPath/boost.$ProgramVersion
-./b2 install -j$CPUCore --prefix=$InstallPrefix link=static,shared variant=release --without-mpi --without-iostreams --without-python
-cd $Cur
-if [ "$ProgramVersion" == "head" ]; then
-    pack_edge_deb_from_dir $Program $RevedPackageVersion $Cur $InstallPrefix
-else
-    pack_versioned_deb_from_dir $Program $PackageVersion $Cur $InstallPrefix
-fi
-
+InstallPrefix=${InstallPath}/${Program}.${ProgramVersion}/${Toolset}.${ToolsetVersion}
+set_toolset_environment "c++" $Toolset $ToolsetVersion
+./bootstrap.sh --prefix=$InstallPrefix --with-toolset=$Toolset
+./b2 headers
+./b2 install -j$CPUCore --prefix=$InstallPrefix --toolset=$Toolset link=static,shared variant=release --without-mpi --without-iostreams --without-python $ToolsetBjamOption
