@@ -173,3 +173,5 @@ if [ "$ProgramVersion" == "head" ]; then
 else
     make_versioned_deb_from_dir gcc $PackageVersion $Cur $InstallPrefix
 fi
+
+regenerate_proc_profiles
