@@ -35,6 +35,9 @@ int main(){
         break;
       else
         generate("gcc", "4."+std::to_string(i)+"."+std::to_string(j));
+  for(int i = 1; i <= 1; ++i)
+    for(int j = 0; j <= 0; ++j)
+      generate("gcc", "5."+std::to_string(i)+"."+std::to_string(j));
   generate("gcc", "head");
   for(int i = 2; i <= 6; ++i)
     generate("clang", "3."+std::to_string(i));

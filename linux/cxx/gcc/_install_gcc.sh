@@ -4,6 +4,8 @@
 . _import.sh
 
 case "$ProgramVersion" in
+    "5.1.0")
+        BranchName="d5ad84b309d0d97d3955fb1f62a96fc262df2b76" ;;
     "head")
         BranchName="master" ;;
     *)
