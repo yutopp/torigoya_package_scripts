@@ -219,3 +219,25 @@ function pack_edge_deb_from_dir() {
             && copy_deb_to_holder $current_dir
     fi
 }
+
+function regenerate_proc_profiles() {
+    cd /etc/proc_profiles
+    ./generate.sh -r
+}
+
+function set_environment_from_json() {
+    # $1 = json_path
+    JSON="cat $1"
+    for i in $(seq 0 `$JSON | jq -r "(.link.env | keys) | length - 1"`)
+    do
+        export `$JSON | jq -r "(.link.env | keys) | .[$i]"`=`$JSON | jq -r ".link.env.$($JSON | jq -r "(.link.env | keys) | .[$i]")"`
+    done
+    export PATH=$PATH:/usr/bin:/bin
+}
+
+function set_toolset_environment() {
+    # $1 = toolset language
+    # $2 = toolset name
+    # $3 = toolset version
+    set_environment_from_json "/etc/proc_profiles/lang.${1}.${2}/${3}.json"
+}
