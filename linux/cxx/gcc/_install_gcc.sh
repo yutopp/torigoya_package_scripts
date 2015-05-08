@@ -147,6 +147,8 @@ else
     Bootstrap=enable
 fi
 
+mkdir -p $InstallPrefix
+
 cp -r $Conf/prerequisites/gmp/$GMPVersion/* $InstallPrefix/
 cp -r $Conf/prerequisites/mpfr/$MPFRVersion/* $InstallPrefix/
 cp -r $Conf/prerequisites/mpc/$MPCVersion/* $InstallPrefix/
