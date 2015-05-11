@@ -200,5 +200,3 @@ if [ "$ProgramVersion" == "head" ]; then
 else
     make_versioned_deb_from_dir $Program $PackageVersion $Cur $InstallPrefix
 fi
-
-regenerate_proc_profiles
